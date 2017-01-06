@@ -6,14 +6,40 @@
 //  Copyright (c) 2013 Jeff Huang. All rights reserved.
 //
 
+#import <Parse/Parse.h>
+
 #import "AppDelegate.h"
+#import "LoginViewController.h"
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //[FBSettings setFacebookDomainPart:@"jeffhuang.sb"];
+    
     // Override point for customization after application launch.
+    [Parse setApplicationId:@"bvGl7Mh6Sh1nxJSsbu70LtkcuPNSYoy8lpOjcwGF"
+                  clientKey:@"oacqihlYShMprmQ0vbTLvk1dzyOkPAcUf6Fns7gN"];
+    
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    [PFFacebookUtils initializeFacebook];
+    
+    // Override point for customization after application launch.
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[[LoginViewController alloc] init]];
+    navController.navigationBarHidden = YES;
+    self.window.rootViewController = navController;
+
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [PFFacebookUtils handleOpenURL:url];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
